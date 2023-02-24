@@ -1,0 +1,7 @@
+{:adapter/jetty {:handler #ig/ref :handler/run-app
+                 :port 3000}
+ :handler/run-app {:db #ig/ref :pg/init}
+ :pg/init {:db {:dbtype "postgresql"
+                :dbname "hs"
+                :user "test"
+                :password "test"}}}
