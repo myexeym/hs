@@ -1,0 +1,9 @@
+;; shadow-cljs configuration
+{:lein true
+
+ :dev-http {8585 "public"}
+
+ :builds
+ {:app
+  {:target :browser
+   :modules {:main {:init-fn su.myexe.app/init!}}}}}

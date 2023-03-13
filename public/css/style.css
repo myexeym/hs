@@ -1,0 +1,15 @@
+
+/* main menu */
+.main-menu {
+    width: 250px;
+    position: fixed;
+    z-index: 1001;
+}
+
+.list-menu {
+    border-radius: 0;
+}
+
+.list-menu {
+    border-radius: 0;
+}
