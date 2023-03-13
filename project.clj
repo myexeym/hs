@@ -20,7 +20,22 @@
                  [org.slf4j/slf4j-simple "1.7.36"]
                  [org.clojure/tools.logging "1.2.4"]
 
-                 [medley "1.4.0"]]
+                 [medley "1.4.0"]
+
+                 ;; Clojure Script
+
+                 [org.clojure/clojurescript "1.11.54"]
+
+                 [thheller/shadow-cljs "2.19.9"]
+                 [metosin/reitit-frontend "0.5.18"]
+                 [reagent "1.1.1"]
+                 [re-frame "1.2.0"]
+
+                 [noencore "0.3.7"]
+                 [cljs-http "0.1.46" :exclusions [noencore]]
+
+                 [arttuka/reagent-material-ui "5.11.12-0"]
+                 ]
 
   :source-paths ["src/clj" "src/cljs" "src/cljc"]
   :test-paths ["test/clj" "test/cljs" "test/cljc"]

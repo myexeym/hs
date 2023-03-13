@@ -30,6 +30,7 @@ pom.xml.asc
 .lein-*
 .nrepl-*
 .DS_Store
+package-lock.json
 
 .hgignore
 .hg/
