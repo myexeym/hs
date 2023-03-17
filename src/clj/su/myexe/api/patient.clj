@@ -1,5 +1,6 @@
 (ns su.myexe.api.patient
   (:require [clojure.java.jdbc :as jdbc]
+            [java-time.api :as jt]
             [medley.core :as medley]))
 
 (defn list-patient
@@ -9,13 +10,15 @@
 
 (defn get-patient
   [{:keys [db id]}]
-  (prn "get-patient -" id))
+  (-> db
+      (jdbc/query ["select * from patient where id = ?" id])
+      first))
 
 (defn create-patient
   [{:keys [db data] :as params}]
   (jdbc/insert! db
                 :patient
-                {})
+                (update data :birthday jt/instant->sql-timestamp))
   (prn "create-patient -" params))
 
 (defn update-patient

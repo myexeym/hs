@@ -17,6 +17,13 @@
   [db ds]
   (IDS/get-data ds db))
 
+(defn get-records
+  "Returns collection of records."
+  [db ds]
+  (->> (IDS/get-data ds db)
+       vals
+       vec))
+
 (defn set-data
   "Sets data to ds."
   [db ds data]
@@ -75,6 +82,10 @@
 (rf/reg-sub :kit.ds/data
   (fn [db [_ ds]]
     (get-data db ds)))
+
+(rf/reg-sub :kit.ds/records
+  (fn [db [_ ds]]
+    (get-records db ds)))
 
 (rf/reg-sub :kit.ds/record
   (fn [db [_ ds id]]

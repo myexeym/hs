@@ -1,62 +1,87 @@
 (ns su.myexe.ui.view.patients.core
   (:require [re-frame.core :as rf]
             [su.myexe.kit.core :refer [>evt <sub]]
+            [su.myexe.ui.view.patients.ds :refer [ds]]
             [su.myexe.invoke :as invoke]
             [reagent-mui.material.container :refer [container]]
+            [reagent-mui.material.button :refer [button]]
+            [reagent-mui.material.stack :refer [stack]]
+            [reagent-mui.material.text-field :refer [text-field]]
             [reagent-mui.x.data-grid :refer [data-grid]]
-            [reagent-mui.util :refer [clj->js' wrap-clj-function]]))
+            [reagent-mui.util :refer [use-effect use-ref use-state js->clj']]))
 
 (rf/reg-event-fx ::init
   (fn [_ [_ query-params]]
     {:dispatch (-> (invoke/invoke :list :patient)
-                   (invoke/on-success #(prn "success" %))
+                   (invoke/set-ds ds)
                    (invoke/on-failure #(prn "failure" %)))}))
 
-(def columns [{:field :id
-               :headerName "FIO"
-               :width 90}
-              {:field :first-name
-               :headerName "Sex"
-               :width 150
-               :editable true}
-              {:field :last-name
+(def columns [{:field :full_name
+               :headerName "Full Name"
+               :width 200}
+              {:field :gender
+               :headerName "Gender"
+               :type :singleSelect
+               :valueOptions [{:value :woman
+                               :label "Woman"}
+                              {:value :man
+                               :label "Man"}]
+               :width 150}
+              {:field :birthday
                :headerName "Birthday"
-               :width 150
-               :editable true}
-              {:field :age
-               :headerName "Address"
-               :type :number
-               :width 110
-               :editable true}
-              {:field :full-name
+               :type :date
+               :width 150}
+              {:field :policy_number
                :headerName "Policy number"
                :description "This column has a value getter and is not sortable."
                :sortable false
-               :width 160
-               :valueGetter (wrap-clj-function
-                              (fn [params]
-                                (str (get-in params [:row :first-name] "") " " (get-in params [:row :last-name] ""))))}])
-
-(def rows [{:id 1 :last-name "Snow" :first-name "Jon hd ksdfhkj sdhfkj sdhfk sdhfklj shdflk hsdfk" :age 35}
-           {:id 2 :last-name "Lannister" :first-name "Cersei" :age 42}
-           {:id 3 :last-name "Lannister" :first-name "Jaime" :age 45}
-           {:id 4 :last-name "Stark" :first-name "Arya" :age 16}
-           {:id 5 :last-name "Targaryen" :first-name "Daenerys" :age nil}
-           {:id 6 :last-name "Melisandre" :first-name nil :age 150}
-           {:id 7 :last-name "Clifford" :first-name "Ferrara" :age 44}
-           {:id 8 :last-name "Frances" :first-name "Rossini" :age 36}
-           {:id 9 :last-name "Roxie" :first-name "Harvey" :age 65}])
+               :width 150}
+              {:field :address
+               :headerName "Address"
+               :width 500}])
 
 (defn view
   []
-  (let [
-        ;rows (<sub [:patients-rows])
-        ]
-    [container
-     [data-grid {:rows rows
-                 :columns columns
-                 :autoHeight true
-                 :page-size-options [5]
-                 :checkbox-selection true
-                 :disable-row-selection-on-click true}]])
-  #_(form-grid/form-grid {}))
+  (let [rows (<sub [:kit.ds/records ds])]
+    [container {:sx {:mt 5}}
+     [stack {:spacing 1}
+      [stack {:direction :row
+              :justifyContent :space-between}
+       [text-field {:id :filter
+                    :sx {:width 500}
+                    :placeholder "Search"
+                    :InputLabelProps {:shrink true}
+                    :variant :standard
+                    :required true
+                    :fullWidth true
+                    ;:value (<sub [:kit.ds/value ds id :full_name])
+                    ;:on-change #(>evt [:kit.ds/set-value ds id :full_name (.. % -target -value)])
+                    }]
+       [button {:variant :outlined
+                :color :success
+                ;:on-click (fn []
+                ;            (>evt [::events/save]))
+                }
+        "Add"]]
+      [data-grid {:rows rows
+                  :columns columns
+                  :autoWidth true
+                  :autoHeight true
+                  :pageSizeOptions [10]
+                  :disableColumnSelector true
+                  :filterMode :server
+                  :componentsProps {:filterPanel
+                                    {:filterFormProps
+                                     {:columnInputProps {:disabled true
+                                                         :sx {:display "none"}}
+                                      :operatorInputProps {:disabled true
+                                                           :sx {:display "none"}}}}}
+                  :onFilterModelChange (fn [filters]
+                                         (let [clj-filters (->> filters
+                                                                js->clj'
+                                                                :items
+                                                                (reduce (fn [acc filter]
+                                                                          (assoc acc (:field filter)
+                                                                                     (:value filter)))
+                                                                        {}))]
+                                           (prn "->>>" clj-filters)))}]]]))

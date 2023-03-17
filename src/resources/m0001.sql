@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS patient;
-DROP TYPE IF EXISTS sex;
-CREATE TYPE sex AS ENUM ('W', 'M');
+-- DROP TYPE IF EXISTS sex;
+-- CREATE TYPE gender AS ENUM ('woman', 'man');
 CREATE TABLE patient (
     id SERIAL,
-    fio text,
-    sex sex,
+    full_name text,
+    gender text,
     birthday date,
     address text,
-    oms text);
+    policy_number text);

@@ -25,6 +25,7 @@
   [{:keys [method
            uri
            query-params
+           params
            on-success
            on-failure
            on-done]}]
@@ -32,6 +33,7 @@
             response (<! (http/request {:method method
                                         :url url
                                         :query-params query-params
+                                        :edn-params params
                                         :with-credentials? false}))]
         (if (= 200 (:status response))
           (when on-success (on-success (:body response)))
@@ -46,7 +48,12 @@
   (fn [_ [_ {:keys [ds on-success] :as params}]]
     (let [on-success (fn [body]
                        (when ds
-                         (rf/dispatch [:kit.ds/set-data ds body]))
+                         (if (coll? body)
+                           (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
+                                                                       (assoc acc (:id v) v))
+                                                                     {}
+                                                                     body)])
+                           (rf/dispatch [:kit.ds/set-record ds (:id body) body])))
                        (when on-success
                          (on-success body)))]
       {::request (assoc params :on-success on-success)})))
@@ -56,10 +63,14 @@
    (invoke action route nil))
   ([action route id]
    (invoke action route id nil))
-  ([action route id query-params]
-   [::invoke {:method (action->method action)
-              :uri (normalise-uri route id)
-              :query-params query-params}]))
+  ([action route id params]
+   (let [method (action->method action)
+         params-kwd (if (= :get method)
+                      :query-params
+                      :params)]
+     [::invoke {:method method
+                :uri (normalise-uri route id)
+                params-kwd params}])))
 
 (defn set-ds
   [[event args] ds]

@@ -2,13 +2,13 @@
   :description "HS"
   :url "http://myexe.su"
 
-  :jvm-opts ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"]
-
   :dependencies [;; Clojure
                  [org.clojure/clojure "1.11.1"]
 
                  [org.clojure/java.jdbc "0.7.12"]
-                 [org.postgresql/postgresql "9.3-1102-jdbc41"]
+                 [org.postgresql/postgresql "42.5.4"]
+
+                 [clojure.java-time "1.2.0"]
 
                  [integrant "0.8.0"]
                  [compojure "1.7.0"]
@@ -45,3 +45,5 @@
             ["do"
              "compile"
              ["run" "-m" "su.myexe.init"]]})
+
+
