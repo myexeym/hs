@@ -20,10 +20,10 @@
   (rf/router
     ["/"
      [""
-      {:name ::patients/view
+      {:name :patients
        :view patients/view
        :controllers (controller ::patients/init)}]
      ["patient"
-      {:name ::patient/view
+      {:name :patient
        :view patient/view
        :controllers (controller ::patient/init)}]]))

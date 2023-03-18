@@ -1,5 +1,6 @@
 (ns su.myexe.kit.ds.DS
-  (:require [su.myexe.kit.ds.IDS :refer [IDS]]))
+  (:require [medley.core :as medley]
+            [su.myexe.kit.ds.IDS :refer [IDS]]))
 
 (defn get-data-path
   ([path]
@@ -31,4 +32,4 @@
     (assoc-in db (get-data-path path record-key value-key) value))
 
   (clear [_ db]
-    (dissoc db path)))
+    (medley/dissoc-in db (get-data-path path))))

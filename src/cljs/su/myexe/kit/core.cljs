@@ -1,5 +1,6 @@
 (ns su.myexe.kit.core
-  (:require [re-frame.core :as rf]))
+  (:require [re-frame.core :as rf]
+            [reitit.frontend.easy :as rfe]))
 
 (defn <sub
   "Alias for @(rf/subscribe [sub])"
@@ -28,9 +29,23 @@
   [db name]
   (get-in db [:state name]))
 
-(rf/reg-event-fx :kit.ds/set-to-state
+;;
+;; Events
+;;
+
+(rf/reg-event-fx :kit/set-to-state
   (fn [{:keys [db]} [_ name value]]
     {:db (set-to-state db name value)}))
+
+(rf/reg-event-fx :kit/navigate-to
+  (fn [_ [_ name path-params query-params replace?]]
+    (if replace?
+      (rfe/replace-state name path-params query-params)
+      (rfe/push-state name path-params query-params))))
+
+;;
+;; Subs
+;;
 
 (rf/reg-sub :kit/get-from-state
   (fn [db [_ name]]

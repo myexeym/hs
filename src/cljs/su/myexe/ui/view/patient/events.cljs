@@ -13,8 +13,8 @@
       (prn "->>" (invoke/invoke :create :patient id patient))
       {:dispatch (if id
                    (-> (invoke/invoke :update :patient id {:data patient})
-                       (invoke/on-success #(prn "-> update success" %))
+                       (invoke/on-success #(>evt [:kit/navigate-to :patients]))
                        (invoke/on-failure #(prn "-> update failure" %)))
                    (-> (invoke/invoke :create :patient id {:data patient})
-                       (invoke/on-success #(prn "-> create success" %))
+                       (invoke/on-success #(>evt [:kit/navigate-to :patients]))
                        (invoke/on-failure #(prn "-> create failure" %))))})))

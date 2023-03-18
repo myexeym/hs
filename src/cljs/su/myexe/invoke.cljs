@@ -48,7 +48,7 @@
   (fn [_ [_ {:keys [ds on-success] :as params}]]
     (let [on-success (fn [body]
                        (when ds
-                         (if (coll? body)
+                         (if (sequential? body)
                            (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
                                                                        (assoc acc (:id v) v))
                                                                      {}

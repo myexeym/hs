@@ -2,6 +2,7 @@
   (:require [re-frame.core :as rf]
             [su.myexe.invoke :as invoke]
             [su.myexe.kit.core :refer [<sub >evt] :as kit]
+            [su.myexe.kit.ds.core :as kit.ds]
             [su.myexe.ui.view.patient.ds :refer [ds]]
             [su.myexe.ui.view.patient.events :as events]
             [reagent-mui.material.container :refer [container]]
@@ -15,19 +16,18 @@
 
 (rf/reg-event-fx ::init
   (fn [{:keys [db]} [_ {:keys [id]}]]
-    (when id
+    (if id
       {:db (kit/set-to-state db :id (js/parseInt id))
        :dispatch (-> (invoke/invoke :get :patient (js/parseInt id))
-                     (invoke/set-ds ds))})))
+                     (invoke/set-ds ds))}
+      {:db (-> db
+               (kit/set-to-state :id nil)
+               (kit.ds/clear ds))})))
 
 (defn view
   []
   (let [id (<sub [:kit/get-from-state :id])
         entity (<sub [:kit.ds/record ds id])]
-    (prn "->" id)
-    (prn "->>" entity)
-    (prn "->>>" (<sub [:kit.ds/data ds]))
-    (prn "+>" (<sub [:kit.ds/value ds id :gender]))
     [container {:maxWidth :xs
                 :fixed true}
      [stack {:sx {:width 500
@@ -61,8 +61,6 @@
                     :format "dd.MM.yyyy"
                     ;:value (js/Date. (<sub [:kit.ds/value ds id :birthday]))
                     :on-change (fn [e]
-                                 (prn "------" (type e))
-                                 (js/console.log (js/Date. e))
                                  (>evt [:kit.ds/set-value ds id :birthday (js/Date. e)]))}]]
       [text-field {:id "address"
                    :label "Address"
@@ -79,14 +77,9 @@
                    :required true
                    :value (<sub [:kit.ds/value ds id :policy_number])
                    :on-change #(>evt [:kit.ds/set-value ds id :policy_number (.. % -target -value)])}]
-      [stack {:direction :row
-              :justifyContent :space-between}
-       [button {:variant :outlined
-                :color :success
-                :on-click (fn []
-                            (>evt [::events/save]))}
-        "Save"]
-       [button {:variant :outlined
-                :color :error}
-        "Reset"]]]]))
+      [button {:variant :outlined
+               :color :success
+               :on-click (fn []
+                           (>evt [::events/save]))}
+       "Save"]]]))
 
