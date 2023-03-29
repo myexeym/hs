@@ -21,6 +21,7 @@
                  [org.clojure/tools.logging "1.2.4"]
 
                  [medley "1.4.0"]
+                 [slingshot "0.12.2"]
 
                  ;; Clojure Script
 
@@ -35,6 +36,11 @@
                  [cljs-http "0.1.46" :exclusions [noencore]]
 
                  [arttuka/reagent-material-ui "5.11.12-0"]
+                 [com.andrewmcveigh/cljs-time "0.5.2"]
+
+                 ;; Clojure and ClojureScript
+
+                 [tongue "0.4.4"]
                  ]
 
   :source-paths ["src/clj" "src/cljs" "src/cljc"]

@@ -12,5 +12,18 @@
     [this db record-key record]
     [this db record-key value-key value])
 
-  (clear
+  (clear-data
+    [this db])
+
+  (get-errors
+    [this db]
+    [this db record-key]
+    [this db record-key value-key])
+
+  (set-errors
+    [this db errors]
+    [this db record-key errors]
+    [this db record-key value-key errors])
+
+  (clear-errors
     [this db]))

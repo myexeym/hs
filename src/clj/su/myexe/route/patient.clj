@@ -10,4 +10,4 @@
     (cc/PUT "/" params (r/call-api patient/create-patient params))
     (cc/PUT "/:id" params (r/call-api patient/update-patient params))
     (cc/DELETE "/:id" params (r/call-api patient/delete-patient params))
-    (cc/POST "/:id/validate" params (r/call-api patient/validate-patient params))))
+    (cc/POST "/validate" params (r/call-api patient/validate-patient params))))

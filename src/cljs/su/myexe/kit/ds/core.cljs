@@ -49,10 +49,45 @@
   [db ds id field value]
   (IDS/set-data ds db id field value))
 
-(defn clear
-  "Clears ds."
+(defn clear-data
+  "Clears ds data."
   [db ds]
-  (IDS/clear ds db))
+  (IDS/clear-data ds db))
+
+(defn get-errors
+  "Returns errors from ds."
+  [db ds]
+  (IDS/get-errors ds db))
+
+(defn set-errors
+  "Sets errors to ds."
+  [db ds errors]
+  (IDS/set-errors ds db errors))
+
+(defn get-errors-for-record
+  "Returns errors for record."
+  [db ds id]
+  (IDS/get-errors ds db id))
+
+(defn set-errors-for-record
+  "Sets errors for record."
+  [db ds id record]
+  (IDS/set-errors ds db id record))
+
+(defn get-errors-for-field
+  "Returns errors for field."
+  [db ds id field]
+  (IDS/get-errors ds db id field))
+
+(defn set-errors-for-field
+  "Sets errors for field."
+  [db ds id field value]
+  (IDS/set-errors ds db id field value))
+
+(defn clear-errors
+  "Clears ds errors."
+  [db ds]
+  (IDS/clear-errors ds db))
 
 
 ;;
@@ -71,9 +106,17 @@
   (fn [{:keys [db]} [_ ds id field value]]
     {:db (set-value db ds id field value)}))
 
-(rf/reg-event-fx :kit.ds/clear
+(rf/reg-event-fx :kit.ds/clear-data
   (fn [{:keys [db]} [_ ds]]
-    {:db (clear db ds)}))
+    {:db (clear-data db ds)}))
+
+(rf/reg-event-fx :kit.ds/set-errors
+  (fn [{:keys [db]} [_ ds errors]]
+    {:db (set-errors db ds errors)}))
+
+(rf/reg-event-fx :kit.ds/set-errors-for-field
+  (fn [{:keys [db]} [_ ds id field value]]
+    {:db (set-errors-for-field db ds id field value)}))
 
 ;;
 ;; Subs
@@ -94,3 +137,7 @@
 (rf/reg-sub :kit.ds/value
   (fn [db [_ ds id field]]
     (get-value db ds id field)))
+
+(rf/reg-sub :kit.ds/get-errors-for-field
+  (fn [db [_ ds id field]]
+    (get-errors-for-field db ds id field)))

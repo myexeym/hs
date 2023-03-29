@@ -1,6 +1,7 @@
 (ns su.myexe.kit.core
   (:require [re-frame.core :as rf]
-            [reitit.frontend.easy :as rfe]))
+            [reitit.frontend.easy :as rfe]
+            [su.myexe.dicts :as dicts]))
 
 (defn <sub
   "Alias for @(rf/subscribe [sub])"
@@ -18,6 +19,16 @@
                 (not (vector? evt)) vector
                 (seq args) (into args))]
       (rf/dispatch evt))))
+
+(defn translate
+  ([key]
+   (dicts/translate nil key))
+  ([locale key]
+   (dicts/translate locale key))
+  ([locale key x]
+   (dicts/translate locale key x))
+  ([locale key x & args]
+   (apply dicts/translate locale key x args)))
 
 (defn set-to-state
   "Adds pair (name, value) to state."

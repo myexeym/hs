@@ -2,9 +2,8 @@
   (:require-macros [reagent-mui.util :refer [with-unchanged-js-props]])
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
-            [su.myexe.kit.core :refer [>evt <sub]]
+            [su.myexe.kit.core :refer [>evt <sub translate]]
             [su.myexe.ui.view.patients.ds :refer [ds]]
-            [su.myexe.invoke :as invoke]
             [reagent-mui.material.container :refer [container]]
             [reagent-mui.material.button :refer [button]]
             [reagent-mui.material.stack :refer [stack]]
@@ -12,35 +11,32 @@
             [reagent-mui.material.text-field :refer [text-field]]
             [reagent-mui.x.data-grid :refer [data-grid]]
             [reagent-mui.util :refer [js->clj' clj->js' wrap-clj-function]]
-            [su.myexe.ui.view.patients.events :as events]
-            ))
+            [su.myexe.ui.view.patients.events :as events]))
 
 (rf/reg-event-fx ::init
   (fn [_ _]
     {:dispatch [::events/load]}))
 
 (def columns [{:field :full_name
-               :headerName "Full Name"
+               :headerName (translate ::full-name)
                :width 200}
               {:field :gender
-               :headerName "Gender"
+               :headerName (translate ::gender)
                :type :singleSelect
                :valueOptions [{:value :woman
-                               :label "Woman"}
+                               :label (translate ::woman)}
                               {:value :man
-                               :label "Man"}]
+                               :label (translate ::man)}]
                :width 150}
               {:field :birthday
-               :headerName "Birthday"
-               :type :date
+               :headerName (translate ::birthday)
                :width 150}
               {:field :policy_number
-               :headerName "Policy number"
-               :description "This column has a value getter and is not sortable."
+               :headerName (translate ::policy-number)
                :sortable false
                :width 150}
               {:field :address
-               :headerName "Address"
+               :headerName (translate ::address)
                :width 450}
               {:field :actions
                :width 50
@@ -59,20 +55,18 @@
               :justifyContent :space-between}
        [text-field {:id :filter
                     :sx {:width 500}
-                    :placeholder "Search"
+                    :placeholder (translate ::search)
                     :InputLabelProps {:shrink true}
                     :variant :standard
                     :required true
                     :fullWidth true
-                    ;:value (<sub [:kit.ds/value ds id :full_name])
                     :on-change (fn [e]
-                                 (>evt [::events/add-filters {:by-all (.. e -target -value)} true]))
-                    }]
+                                 (>evt [::events/add-filters {:by-all (.. e -target -value)} true]))}]
        [button {:variant :outlined
                 :color :success
                 :on-click (fn []
                             (>evt [:kit/navigate-to :patient]))}
-        "Add"]]
+        (translate ::add)]]
       [data-grid {:rows rows
                   :columns columns
                   :autoWidth true

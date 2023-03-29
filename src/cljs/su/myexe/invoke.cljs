@@ -10,10 +10,12 @@
    :get :get
    :create :put
    :update :put
-   :delete :delete})
+   :delete :delete
+   :validate :post})
 
 (def route->uri
-  {:patient "patient"})
+  {:patient "patient"
+   :patient/validate "patient/validate"})
 
 (defn normalise-uri
   [uri id]
@@ -41,19 +43,31 @@
         (when on-done (on-done response)))))
 
 (rf/reg-fx ::request
-  (fn [params]
-    (request params)))
+           (fn [params]
+             (request params)))
 
 (rf/reg-event-fx ::invoke
-  (fn [_ [_ {:keys [ds on-success] :as params}]]
+  (fn [_ [_ {:keys [ds error-ds on-success] :as params}]]
     (let [on-success (fn [body]
                        (when ds
-                         (if (sequential? body)
-                           (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
-                                                                       (assoc acc (:id v) v))
-                                                                     {}
-                                                                     body)])
-                           (rf/dispatch [:kit.ds/set-record ds (:id body) body])))
+                         (if-let [errors (:errors body)]
+                           (rf/dispatch [:kit.ds/set-errors ds (reduce (fn [acc v]
+                                                                         (assoc-in acc [(:id v) (:field v)] v))
+                                                                       {}
+                                                                       errors)])
+                           (if (sequential? body)
+                             (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
+                                                                         (assoc acc (:id v) v))
+                                                                       {}
+                                                                       body)])
+                             (rf/dispatch [:kit.ds/set-record ds (:id body) body]))))
+                       (when error-ds
+                         (if-let [errors (:errors body)]
+                           (rf/dispatch [:kit.ds/set-errors error-ds (reduce (fn [acc v]
+                                                                               (update-in acc [(:id v) (:field v)] conj v))
+                                                                             {}
+                                                                             errors)])
+                           (rf/dispatch [:kit.ds/set-errors error-ds nil])))
                        (when on-success
                          (on-success body)))]
       {::request (assoc params :on-success on-success)})))
@@ -75,6 +89,10 @@
 (defn set-ds
   [[event args] ds]
   [event (assoc args :ds ds)])
+
+(defn set-error-to-ds
+  [[event args] ds]
+  [event (assoc args :error-ds ds)])
 
 (defn on-success
   [[event args] on-success]

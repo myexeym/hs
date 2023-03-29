@@ -8,13 +8,18 @@
 (rf/reg-event-fx ::save
   (fn [{:keys [db]} _]
     (let [id (kit/get-from-state db :id)
+          patient (kit.ds/get-record db ds id)
+          method (if id
+                   :update
+                   :create)]
+      {:dispatch (-> (invoke/invoke method :patient id {:data patient})
+                     (invoke/set-error-to-ds ds)
+                     (invoke/on-success #(when (empty? (:errors %))
+                                           (>evt [:kit/navigate-to :patients]))))})))
+
+(rf/reg-event-fx ::validate
+  (fn [{:keys [db]} _]
+    (let [id (kit/get-from-state db :id)
           patient (kit.ds/get-record db ds id)]
-      (prn "->" id patient)
-      (prn "->>" (invoke/invoke :create :patient id patient))
-      {:dispatch (if id
-                   (-> (invoke/invoke :update :patient id {:data patient})
-                       (invoke/on-success #(>evt [:kit/navigate-to :patients]))
-                       (invoke/on-failure #(prn "-> update failure" %)))
-                   (-> (invoke/invoke :create :patient id {:data patient})
-                       (invoke/on-success #(>evt [:kit/navigate-to :patients]))
-                       (invoke/on-failure #(prn "-> create failure" %))))})))
+      {:dispatch (-> (invoke/invoke :validate :patient/validate nil {:data patient})
+                     (invoke/set-error-to-ds ds))})))
