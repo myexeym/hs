@@ -115,7 +115,7 @@
                     :gender "woman"
                     :birthday "11.11.2000"
                     :address "123131"
-                    :policy_number "1234567890123456"}]
+                    :policy_number "12345678901234567"}]
       (is (nil? (sut/validate-entity :patient patient)))))
   (testing "Errors"
     (let [patient {:id 8
