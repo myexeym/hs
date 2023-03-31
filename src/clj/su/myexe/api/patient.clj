@@ -52,14 +52,14 @@
 
 (defn create-patient
   [{:keys [db data]}]
-  (validate/check-entity :patient data)
+  (validate/validate-entity :patient data)
   (jdbc/insert! db
                 :patient
                 (medley/update-existing data :birthday #(jt/local-date const/date-format %))))
 
 (defn update-patient
   [{:keys [db id data]}]
-  (validate/check-entity :patient data)
+  (validate/validate-entity :patient data)
   (jdbc/update! db
                 :patient
                 (-> data
@@ -73,4 +73,4 @@
 
 (defn validate-patient
   [{:keys [data]}]
-  (validate/check-entity :patient data))
+  (validate/validate-entity :patient data))

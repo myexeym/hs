@@ -31,7 +31,7 @@
           []
           check-fns))
 
-(defn validate-entity
+(defn- validate
   ""
   [entity validation-map]
   (let [require-errors (check-require entity validation-map)
@@ -51,11 +51,11 @@
         (into require-errors)
         (into fields-error))))
 
-(defmulti check-entity
+(defmulti validate-entity
   (fn [x _]
     x))
 
-(defmethod check-entity :patient
+(defmethod validate-entity :patient
   [_ data]
   (let [check-policy-number (fn [v]
                               (when (not= 16 (count v))
@@ -67,7 +67,7 @@
                                           (jt/local-date))
                            [{:type :error
                              :message :validation/too-young}]))
-        errors (validate-entity data
+        errors (validate data
                                          {:full_name [:require]
                                           :gender [:require]
                                           :birthday [:require check-birthday]
