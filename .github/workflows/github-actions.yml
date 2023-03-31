@@ -1,29 +1,28 @@
 name: Clojure Test
-on: [push]
+on: [ push ]
 jobs:
-  Explore-GitHub-Actions:
-    unit-test-leiningen:
-      strategy:
-        matrix:
-          os: [ ubuntu-latest, macOS-latest ]
+  unit-test-leiningen:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macOS-latest ]
 
-      runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@develop
+    steps:
+      - name: Checkout
+        uses: actions/checkout@develop
 
-        - name: Prepare java
-          uses: actions/setup-java@v3
-          with:
-            distribution: 'zulu'
-            java-version: '8'
+      - name: Prepare java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '8'
 
-        - name: Install leiningen
-          uses: ./
-          with:
-            lein: 2.9.1
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install leiningen
+        uses: ./
+        with:
+          lein: 2.9.1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Check leiningen version
-          run: lein version
+      - name: Check leiningen version
+        run: lein version
