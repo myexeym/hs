@@ -2,7 +2,8 @@
   (:require [integrant.core :as ig]
             [ring.adapter.jetty :as jetty]
             [clojure.java.io :as io]
-            [su.myexe.handler :as handler])
+            [su.myexe.handler :as handler]
+            [migratus.core :as migratus])
   (:gen-class))
 
 (def config
@@ -22,8 +23,11 @@
   (handler/app {:db db}))
 
 (defmethod ig/init-key :pg/init
-  [_ {:keys [db]}]
-  ;; TODO: Need add migration.
+  [_ {:keys [db migratus-cfg]}]
+  (let [cfg (assoc migratus-cfg :db db)]
+    (prn "->>>" cfg)
+    (migratus/init cfg)
+    (migratus/migrate cfg))
   db)
 
 (defmethod ig/halt-key! :adapter/jetty

@@ -7,6 +7,7 @@
 
                  [org.clojure/java.jdbc "0.7.12"]
                  [org.postgresql/postgresql "42.5.4"]
+                 [migratus "1.4.9"]
 
                  [clojure.java-time "1.2.0"]
 

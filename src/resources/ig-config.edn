@@ -3,5 +3,11 @@
  :handler/run-app {:db #ig/ref :pg/init}
  :pg/init {:db {:dbtype "postgresql"
                 :dbname "hs"
+                :host "host.docker.internal"
+                :port "5432"
                 :user "test"
-                :password "test"}}}
+                :password "test"}
+           :migratus-cfg {:store :database
+                          :migration-dir "migrations"
+                          :init-script "init.sql"
+                          :migration-table-name "migratus"}}}
