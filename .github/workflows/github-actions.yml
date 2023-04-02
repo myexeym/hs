@@ -25,13 +25,13 @@ jobs:
       - name: Run lein test
         run: lein test
 
-  build:
-    name: Build back
+  build-back:
+    name: Build Back
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build image
         run: docker build -t hs/back -f ./docker/back/Dockerfile .
@@ -40,3 +40,19 @@ jobs:
         uses: ishworkh/docker-image-artifact-upload@v1
         with:
           image: "hs/back:latest"
+
+  build-front:
+    name: Build Front
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build -t hs/front -f ./docker/front/Dockerfile .
+
+      - name: Upload image
+        uses: ishworkh/docker-image-artifact-upload@v1
+        with:
+          image: "hs/front:latest"
