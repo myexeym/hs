@@ -1,7 +1,7 @@
 (ns su.myexe.app
   (:require [clojure.browser.dom :as cd]
             [reagent.core :as r]
-            [reagent.dom :as rdom]
+            [reagent.dom :as r-dom]
             [reitit.frontend.controllers :as rfc]
             [reitit.frontend.easy :as rfe]
             [re-frame.core :as rf]
@@ -37,6 +37,6 @@
                   (>evt [::set-view (:view (:data new-match))])
                   (rfe/replace-state :su.myexe.ui.view.error-404/view nil nil)))
               {:use-fragment false})
-  (rdom/render
+  (r-dom/render
     [root]
     (cd/get-element "root")))

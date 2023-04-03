@@ -20,7 +20,9 @@
                 (seq args) (into args))]
       (rf/dispatch evt))))
 
+;; FIXME Need remove, make a locale everywhere.
 (defn translate
+  "Alias for dicts/translate without locale."
   ([key]
    (dicts/translate nil key))
   ([locale key]

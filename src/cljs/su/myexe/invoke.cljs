@@ -3,6 +3,7 @@
             [cljs.core.async :refer [go <!]]
             [re-frame.core :as rf]))
 
+;; FIXME Move to config
 (def BASE_URL "http://localhost:3000/")
 
 (def action->method

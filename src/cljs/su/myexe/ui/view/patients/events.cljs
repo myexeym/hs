@@ -23,6 +23,5 @@
 
 (rf/reg-event-fx ::delete
   (fn [_ [_ id]]
-    (prn "delete " id)
     {:dispatch (-> (invoke/invoke :delete :patient id)
                    (invoke/on-success #(>evt [::load])))}))

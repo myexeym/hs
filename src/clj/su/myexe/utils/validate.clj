@@ -5,6 +5,8 @@
   (:use [slingshot.slingshot :only [throw+]]))
 
 (defn- check-require
+  "Check required fields by validation-map.
+  Returns collection of errors."
   [entity validation-map]
   (->> validation-map
        (filter (fn [[_ v]]
@@ -25,6 +27,8 @@
                [])))
 
 (defn- check-field
+  "Checks field by collection of functions.
+  Returns collection of errors."
   [value check-fns]
   (reduce (fn [acc check-fn]
             (into acc (check-fn value)))
@@ -32,7 +36,8 @@
           check-fns))
 
 (defn- validate
-  ""
+  "Checks entity by functions from validation-map.
+  Returns collection of errors."
   [entity validation-map]
   (let [require-errors (check-require entity validation-map)
         fields-error (reduce-kv (fn [acc k v]
@@ -52,8 +57,12 @@
         (into fields-error))))
 
 (defmulti validate-entity
-  (fn [x _]
-    x))
+  "Checks entity.
+  Params:
+   `entity-type - type of entity`
+   `data` - entity"
+  (fn [entity-type _]
+    entity-type))
 
 (defmethod validate-entity :patient
   [_ data]
@@ -68,11 +77,11 @@
                            [{:type :error
                              :message :validation/too-young}]))
         errors (validate data
-                                         {:full_name [:require]
-                                          :gender [:require]
-                                          :birthday [:require check-birthday]
-                                          :address [:require]
-                                          :policy_number [:require check-policy-number]})]
+                         {:full_name [:require]
+                          :gender [:require]
+                          :birthday [:require check-birthday]
+                          :address [:require]
+                          :policy_number [:require check-policy-number]})]
     (when (seq errors)
       (throw+ {:type :validation-error
                :errors errors}))))
