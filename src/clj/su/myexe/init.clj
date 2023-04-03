@@ -25,7 +25,6 @@
 (defmethod ig/init-key :pg/init
   [_ {:keys [db migratus-cfg]}]
   (let [cfg (assoc migratus-cfg :db db)]
-    (prn "->>>" cfg)
     (migratus/init cfg)
     (migratus/migrate cfg))
   db)

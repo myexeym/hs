@@ -3,7 +3,7 @@
  :handler/run-app {:db #ig/ref :pg/init}
  :pg/init {:db {:dbtype "postgresql"
                 :dbname "hs"
-                :host "host.docker.internal"
+                :host "localhost"
                 :port "5432"
                 :user "test"
                 :password "test"}

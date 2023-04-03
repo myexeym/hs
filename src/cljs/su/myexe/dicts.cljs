@@ -23,7 +23,7 @@
                                          :add "Add"}
 
         :validation {:field-require "Required"
-                     :too-young "Minimum age must be 18 years old"
+                     :too-young "Age must be at least 18 years old"
                      :incorrect-policy "Must be of 16 digits"}}
    :tongue/fallback :en})
 

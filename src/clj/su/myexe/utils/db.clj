@@ -1,14 +1,13 @@
 (ns su.myexe.utils.db
-  (:require [clojure.java.jdbc :as jdbc]
-            [java-time.api :as jt]
-            [medley.core :as medley]))
+  (:require [su.myexe.const :as const]
+            [java-time.api :as jt]))
 
-(defn map->db-data
-  [data]
-  (-> (medley/map-keys #(keyword (name %)) data)
-      (update :birthday jt/instant->sql-timestamp)))
+(defn string->date
+  "Converts string to date by date-format."
+  [str]
+  (jt/local-date const/date-format str))
 
-(defn db-data->map
-  [data]
-  (-> (medley/map-keys #(keyword (name %)) data)
-      (update :birthday jt/instant->sql-timestamp)))
+(defn date->string
+  "Converts date to string by date-format."
+  [date]
+  (jt/format const/date-format (jt/local-date date)))
