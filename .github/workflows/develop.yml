@@ -1,4 +1,4 @@
-name: Clojure Test
+name: Develop Test
 on:
   push:
     branches:

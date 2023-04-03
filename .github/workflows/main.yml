@@ -1,4 +1,4 @@
-name: Clojure Test
+name: Main Test and Build Dockers
 on:
   push:
     branches:
