@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hs-back
+  labels:
+    app: hs-back
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: hs-dep-back
+  template:
+    metadata:
+      labels:
+        app: hs-dep-back
+    spec:
+      containers:
+        - name: hs-back
+          image: myexeym/hs-back:latest
+          ports:
+            - containerPort: 3000

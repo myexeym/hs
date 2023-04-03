@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hs-front
+  labels:
+    app: hs-front
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: hs-dep-front
+  template:
+    metadata:
+      labels:
+        app: hs-dep-front
+    spec:
+      containers:
+        - name: hs-front
+          image: myexeym/hs-front:latest
+          ports:
+            - containerPort: 8585
