@@ -37,12 +37,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build image
-        run: docker build -t hs/back -f ./docker/back/Dockerfile .
+        run: docker build -t myexeym/hs-back -f ./kuber/back/Dockerfile .
 
       - name: Upload image
         uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          image: "hs/back:latest"
+          image: "myexeym/hs-back:latest"
 
   build-front:
     name: Build Front
@@ -53,9 +53,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build image
-        run: docker build -t hs/front -f ./docker/front/Dockerfile .
+        run: docker build -t myexeym/hs-front -f ./kuber/front/Dockerfile .
 
       - name: Upload image
         uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          image: "hs/front:latest"
+          image: "myexeym/hs-front:latest"
