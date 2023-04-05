@@ -48,7 +48,6 @@
 (defn view
   []
   (let [rows (<sub [:kit.ds/records ds])]
-
     [container {:sx {:mt 5}}
      [stack {:spacing 1}
       [stack {:direction :row

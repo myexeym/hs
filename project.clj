@@ -41,8 +41,7 @@
 
                  ;; Clojure and ClojureScript
 
-                 [tongue "0.4.4"]
-                 ]
+                 [tongue "0.4.4"]]
 
   :source-paths ["src/clj" "src/cljs" "src/cljc"]
   :test-paths ["test/clj" "test/cljs" "test/cljc"]
