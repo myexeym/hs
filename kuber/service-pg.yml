@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hs-svc-pg
+spec:
+  selector:
+    app: hs-dep-pg
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -1,10 +1,10 @@
 (ns su.myexe.app
   (:require [clojure.browser.dom :as cd]
+            [re-frame.core :as rf]
             [reagent.core :as r]
             [reagent.dom :as r-dom]
             [reitit.frontend.controllers :as rfc]
             [reitit.frontend.easy :as rfe]
-            [re-frame.core :as rf]
             [su.myexe.invoke]
             [su.myexe.kit.core :refer [<sub >evt]]
             [su.myexe.route :as route]))

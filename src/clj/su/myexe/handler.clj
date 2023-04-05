@@ -2,10 +2,10 @@
   (:require [compojure.core :as cc]
             [compojure.route :as cr]
             [ring.middleware.cors :refer [wrap-cors]]
-            [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.format :refer [wrap-restful-format]]
-            [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
+            [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.x-headers :refer [wrap-xss-protection]]
             [su.myexe.route.patient :as patient]))
 

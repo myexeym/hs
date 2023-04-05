@@ -1,7 +1,7 @@
 (ns su.myexe.kit.ds.core
-  (:require [su.myexe.kit.ds.DS :refer [->DS]]
-            [su.myexe.kit.ds.IDS :as IDS]
-            [re-frame.core :as rf]))
+  (:require [re-frame.core :as rf]
+            [su.myexe.kit.ds.DS :refer [->DS]]
+            [su.myexe.kit.ds.IDS :as IDS]))
 
 ;;
 ;; Functions

@@ -1,6 +1,6 @@
 (ns su.myexe.utils.db
-  (:require [su.myexe.const :as const]
-            [java-time.api :as jt]))
+  (:require [java-time.api :as jt]
+            [su.myexe.const :as const]))
 
 (defn string->date
   "Converts string to date by date-format."

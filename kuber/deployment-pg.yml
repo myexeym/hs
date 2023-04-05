@@ -1,21 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hs-service-back
+  name: hs-svc-pg
 spec:
   selector:
-    app: hs-dep-back
+    app: hs-dep-pg
   ports:
-    - port: 3001
-      targetPort: 3000
-  type: LoadBalancer
+    - port: 5432
+      targetPort: 5432
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hs-back
+  name: hs-pg
   labels:
-    app: hs-back
+    app: hs-pg
 spec:
   replicas: 1
   minReadySeconds: 10
@@ -26,14 +25,14 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: hs-dep-back
+      app: hs-dep-pg
   template:
     metadata:
       labels:
-        app: hs-dep-back
+        app: hs-dep-pg
     spec:
       containers:
         - name: hs-back
-          image: myexeym/hs-back:latest
+          image: myexeym/hs-pg:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 5432

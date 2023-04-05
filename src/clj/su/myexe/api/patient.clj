@@ -2,8 +2,8 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as string]
             [medley.core :as medley]
-            [su.myexe.utils.validate :as u-validate]
-            [su.myexe.utils.db :as u-db]))
+            [su.myexe.utils.db :as u-db]
+            [su.myexe.utils.validate :as u-validate]))
 
 ;;
 ;; Helpers

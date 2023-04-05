@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: test-my-hs.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: hs-service-front
+                port:
+                  number: 8000
+          - pathType: Prefix
+            path: /api
+            backend:
+              service:
+                name: hs-service-back
+                port:
+                  number: 3000

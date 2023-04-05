@@ -1,13 +1,14 @@
 {:adapter/jetty {:handler #ig/ref :handler/run-app
                  :port 3000}
  :handler/run-app {:db #ig/ref :pg/init}
- :pg/init {:db {:dbtype "postgresql"
-                :dbname "hs"
-                :host "localhost"
-                :port "5432"
-                :user "test"
-                :password "test"}
+ :pg/init {:db #ig/ref :pg/db
            :migratus-cfg {:store :database
                           :migration-dir "migrations"
                           :init-script "init.sql"
-                          :migration-table-name "migratus"}}}
+                          :migration-table-name "migratus"}}
+ :pg/db {:db {:dbtype "postgresql"
+              :dbname "hs"
+              :host "localhost"
+              :port "5432"
+              :user "test"
+              :password "test"}}}

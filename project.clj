@@ -20,9 +20,9 @@
                  [org.slf4j/slf4j-api "1.7.30"]
                  [org.slf4j/slf4j-simple "1.7.36"]
                  [org.clojure/tools.logging "1.2.4"]
-
                  [medley "1.4.0"]
                  [slingshot "0.12.2"]
+                 [environ "1.2.0"]
 
                  ;; Clojure Script
 

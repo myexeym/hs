@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hs-service-front
+spec:
+  selector:
+    app: hs-dep-front
+  ports:
+    - port: 8000
+      targetPort: 8585
+  type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,7 +17,7 @@ metadata:
   labels:
     app: hs-front
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 10
   strategy:
     rollingUpdate:

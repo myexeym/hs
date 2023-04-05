@@ -1,11 +1,11 @@
 (ns su.myexe.kit.components.date-picker-ds
-  (:require [clojure.string :as string]
-            [cljs-time.core :as ct]
+  (:require [cljs-time.core :as ct]
             [cljs-time.format :as ctf]
+            [clojure.string :as string]
             [reagent-mui.cljs-time-adapter :refer [cljs-time-adapter]]
+            [reagent-mui.x.date-picker :refer [date-picker]]
             [reagent-mui.x.localization-provider :refer [localization-provider]]
-            [su.myexe.kit.core :refer [<sub >evt translate]]
-            [reagent-mui.x.date-picker :refer [date-picker]]))
+            [su.myexe.kit.core :refer [<sub >evt translate]]))
 
 (defn date-picker-ds
   [{:keys [ds

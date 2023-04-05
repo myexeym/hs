@@ -1,16 +1,16 @@
 (ns su.myexe.ui.view.patient.core
   (:require [re-frame.core :as rf]
+            [reagent-mui.material.button :refer [button]]
+            [reagent-mui.material.container :refer [container]]
+            [reagent-mui.material.menu-item :refer [menu-item]]
+            [reagent-mui.material.stack :refer [stack]]
             [su.myexe.invoke :as invoke]
+            [su.myexe.kit.components.date-picker-ds :refer [date-picker-ds]]
+            [su.myexe.kit.components.text-field-ds :refer [text-field-ds]]
             [su.myexe.kit.core :refer [<sub >evt translate] :as kit]
             [su.myexe.kit.ds.core :as kit.ds]
             [su.myexe.ui.view.patient.ds :refer [ds]]
-            [su.myexe.ui.view.patient.events :as events]
-            [reagent-mui.material.container :refer [container]]
-            [reagent-mui.material.button :refer [button]]
-            [reagent-mui.material.stack :refer [stack]]
-            [su.myexe.kit.components.text-field-ds :refer [text-field-ds]]
-            [su.myexe.kit.components.date-picker-ds :refer [date-picker-ds]]
-            [reagent-mui.material.menu-item :refer [menu-item]]))
+            [su.myexe.ui.view.patient.events :as events]))
 
 (rf/reg-event-fx ::init
   (fn [{:keys [db]} [_ {:keys [id]}]]

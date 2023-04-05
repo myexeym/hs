@@ -2,15 +2,15 @@
   (:require-macros [reagent-mui.util :refer [with-unchanged-js-props]])
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
+            [reagent-mui.icons.delete :refer [delete]]
+            [reagent-mui.material.button :refer [button]]
+            [reagent-mui.material.container :refer [container]]
+            [reagent-mui.material.stack :refer [stack]]
+            [reagent-mui.material.text-field :refer [text-field]]
+            [reagent-mui.util :refer [js->clj' clj->js' wrap-clj-function]]
+            [reagent-mui.x.data-grid :refer [data-grid]]
             [su.myexe.kit.core :refer [>evt <sub translate]]
             [su.myexe.ui.view.patients.ds :refer [ds]]
-            [reagent-mui.material.container :refer [container]]
-            [reagent-mui.material.button :refer [button]]
-            [reagent-mui.material.stack :refer [stack]]
-            [reagent-mui.icons.delete :refer [delete]]
-            [reagent-mui.material.text-field :refer [text-field]]
-            [reagent-mui.x.data-grid :refer [data-grid]]
-            [reagent-mui.util :refer [js->clj' clj->js' wrap-clj-function]]
             [su.myexe.ui.view.patients.events :as events]))
 
 (rf/reg-event-fx ::init

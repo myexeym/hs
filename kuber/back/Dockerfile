@@ -5,4 +5,6 @@ WORKDIR /app
 COPY . /app
 RUN lein deps
 
+ENV PG_HOST=hs-svc-pg.default.svc.cluster.local
+
 ENTRYPOINT "lein" "dev"
