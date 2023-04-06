@@ -13,7 +13,8 @@
     (let [result (method (-> params
                              (merge app-params)
                              (medley/update-existing :id parse-long)))]
-      (log/info "<-api<-" (str method) (rr/response result))
       (rr/response result))
     (catch [:type :validation-error] e
-      (rr/response e))))
+      (rr/response e))
+    (finally
+      (log/info "<-api<-" (str method)))))
