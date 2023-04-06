@@ -1,6 +1,6 @@
 (ns su.myexe.api.patient-test
-  (:require [clojure.test :refer :all])
-  (:require [su.myexe.api.patient :as sut]))
+  (:require [clojure.test :refer :all]
+            [su.myexe.api.patient :as sut]))
 
 (deftest gen-list-sql-query-test
   (let [gen-list-sql-query #'sut/gen-list-sql-query]
