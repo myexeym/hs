@@ -19,12 +19,14 @@
    :patient/validate "patient/validate"})
 
 (defn normalise-uri
+  "Adds id to uri."
   [uri id]
   (if id
     (str (route->uri uri) "/" id)
     (route->uri uri)))
 
 (defn- request
+  "Makes request to back."
   [{:keys [method
            uri
            query-params
@@ -44,33 +46,38 @@
         (when on-done (on-done response)))))
 
 (rf/reg-fx ::request
-           (fn [params]
-             (request params)))
+  (fn [params]
+    (request params)))
 
 (rf/reg-event-fx ::invoke
   (fn [_ [_ {:keys [ds error-ds on-success] :as params}]]
-    (let [on-success (fn [body]
-                       (when ds
-                         (if-let [errors (:errors body)]
-                           (rf/dispatch [:kit.ds/set-errors ds (reduce (fn [acc v]
-                                                                         (assoc-in acc [(:id v) (:field v)] v))
-                                                                       {}
-                                                                       errors)])
-                           (if (sequential? body)
-                             (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
-                                                                         (assoc acc (:id v) v))
-                                                                       {}
-                                                                       body)])
-                             (rf/dispatch [:kit.ds/set-record ds (:id body) body]))))
-                       (when error-ds
-                         (if-let [errors (:errors body)]
-                           (rf/dispatch [:kit.ds/set-errors error-ds (reduce (fn [acc v]
-                                                                               (update-in acc [(:id v) (:field v)] conj v))
-                                                                             {}
-                                                                             errors)])
-                           (rf/dispatch [:kit.ds/set-errors error-ds nil])))
-                       (when on-success
-                         (on-success body)))]
+    (let [on-success
+          (fn [body]
+            (when ds
+              (if-let [errors (:errors body)]
+                (rf/dispatch [:kit.ds/set-errors
+                              ds
+                              (reduce (fn [acc v]
+                                        (assoc-in acc [(:id v) (:field v)] v))
+                                      {}
+                                      errors)])
+                (if (sequential? body)
+                  (rf/dispatch [:kit.ds/set-data ds (reduce (fn [acc v]
+                                                              (assoc acc (:id v) v))
+                                                            {}
+                                                            body)])
+                  (rf/dispatch [:kit.ds/set-record ds (:id body) body]))))
+            (when error-ds
+              (if-let [errors (:errors body)]
+                (rf/dispatch [:kit.ds/set-errors
+                              error-ds
+                              (reduce (fn [acc v]
+                                        (update-in acc [(:id v) (:field v)] conj v))
+                                      {}
+                                      errors)])
+                (rf/dispatch [:kit.ds/set-errors error-ds nil])))
+            (when on-success
+              (on-success body)))]
       {::request (assoc params :on-success on-success)})))
 
 (defn invoke
